@@ -66,30 +66,44 @@ class FileProcessor:
     
     @staticmethod
     def procesar_dataframe(df: pd.DataFrame, 
-                          nombre_archivo: str,
-                          columnas_a_ignorar: List[str],
-                          columna_1_nombre: str = "Archivo_Origen",
-                          columna_2_nombre: str = "Fecha_Procesamiento") -> pd.DataFrame:
+                        nombre_archivo: str,
+                        columnas_a_ignorar: List[str],
+                        columna_1_nombre: str = "Archivo_Origen",
+                        columna_2_nombre: str = "Fecha_Procesamiento") -> pd.DataFrame:
         """
         Procesa un DataFrame agregando columnas y eliminando las especificadas.
-        
-        Args:
-            df: DataFrame a procesar
-            nombre_archivo: Nombre del archivo original
-            columnas_a_ignorar: Lista de nombres de columnas a eliminar
-            columna_1_nombre: Nombre de la primera columna a agregar
-            columna_2_nombre: Nombre de la segunda columna a agregar
-            
-        Returns:
-            DataFrame procesado
+
+        Inserta al inicio DOS columnas (usando los nombres recibidos por parámetro):
+        * columna_1_nombre  <- FECHA_ASIG formateada 'YYYYMM'
+        * columna_2_nombre  <- FECHA_LEG  formateada 'YYYYMM'
+        Mantiene intactas las columnas originales.
         """
         df_procesado = df.copy()
-        
-        # Agregar las dos columnas al inicio
-        fecha_actual = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        df_procesado.insert(0, columna_1_nombre, os.path.basename(nombre_archivo))
-        df_procesado.insert(1, columna_2_nombre, fecha_actual)
-        
+
+        # Formato 'YYYYMM' (sin guion). dayfirst=True para fechas tipo DD/MM/YYYY.
+        if "FECHA_ASIG" in df_procesado.columns:
+            asig_fmt = pd.to_datetime(
+                df_procesado["FECHA_ASIG"], errors="coerce", dayfirst=True
+            ).dt.strftime("%Y%m").fillna("")
+        else:
+            asig_fmt = ""  # se difunde como escalar
+
+        if "FECHA_LEG" in df_procesado.columns:
+            leg_fmt = pd.to_datetime(
+                df_procesado["FECHA_LEG"], errors="coerce", dayfirst=True
+            ).dt.strftime("%Y%m").fillna("")
+        else:
+            leg_fmt = ""
+
+        # Insertar al inicio con los nombres que pases (los puedes renombrar al llamar)
+        df_procesado.insert(0, columna_1_nombre, asig_fmt)
+        df_procesado.insert(1, columna_2_nombre, leg_fmt)
+
+        logger.info(
+            f"Insertadas columnas '{columna_1_nombre}' (de FECHA_ASIG) y "
+            f"'{columna_2_nombre}' (de FECHA_LEG) con formato 'YYYYMM'"
+        )
+
         # Eliminar columnas especificadas
         columnas_eliminadas = []
         for columna in columnas_a_ignorar:
@@ -99,9 +113,10 @@ class FileProcessor:
                 logger.info(f"Columna '{columna}' eliminada de {nombre_archivo}")
             else:
                 logger.warning(f"Columna '{columna}' no encontrada en {nombre_archivo}")
-        
+
         return df_procesado, columnas_eliminadas
-    
+
+
     @staticmethod
     def guardar_archivo(df: pd.DataFrame, 
                        ruta_salida: str, 
