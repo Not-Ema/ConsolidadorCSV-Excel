@@ -1,0 +1,19 @@
+# Consolidador Pro - Dependencias
+# Versión: 2.0.0
+
+# Procesamiento de datos
+pandas>=1.5.0
+
+# Soporte para archivos Excel
+openpyxl>=3.0.0
+
+# Soporte para archivos Excel antiguos (.xls) - opcional
+xlrd>=2.0.0
+
+# Interfaz gráfica (incluido con Python)
+# tkinter - no requiere instalación separada
+
+# Logging y utilidades (incluido con Python)
+# logging - no requiere instalación separada
+# pathlib - no requiere instalación separada
+# threading - no requiere instalación separada
