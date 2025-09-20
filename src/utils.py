@@ -68,8 +68,8 @@ class FileProcessor:
     def procesar_dataframe(df: pd.DataFrame, 
                         nombre_archivo: str,
                         columnas_a_ignorar: List[str],
-                        columna_1_nombre: str = "Archivo_Origen",
-                        columna_2_nombre: str = "Fecha_Procesamiento") -> pd.DataFrame:
+                        columna_1_nombre: str = "PERIODO_L",
+                        columna_2_nombre: str = "PERIODO_A") -> pd.DataFrame:
         """
         Procesa un DataFrame agregando columnas y eliminando las especificadas.
 
@@ -96,12 +96,12 @@ class FileProcessor:
             leg_fmt = ""
 
         # Insertar al inicio con los nombres que pases (los puedes renombrar al llamar)
-        df_procesado.insert(0, columna_1_nombre, asig_fmt)
-        df_procesado.insert(1, columna_2_nombre, leg_fmt)
+        df_procesado.insert(0, columna_2_nombre, asig_fmt)
+        df_procesado.insert(1, columna_1_nombre, leg_fmt)
 
         logger.info(
-            f"Insertadas columnas '{columna_1_nombre}' (de FECHA_ASIG) y "
-            f"'{columna_2_nombre}' (de FECHA_LEG) con formato 'YYYYMM'"
+            f"Insertadas columnas '{columna_2_nombre}' (de FECHA_ASIG) y "
+            f"'{columna_1_nombre}' (de FECHA_LEG) con formato 'YYYYMM'"
         )
 
         # Eliminar columnas especificadas

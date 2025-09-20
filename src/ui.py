@@ -149,12 +149,12 @@ class ConsolidadorUI:
         
         ttk.Label(frame_config, text="Nombre Columna 1:").grid(row=0, column=0, sticky=tk.W, pady=2)
         self.entry_columna1 = ttk.Entry(frame_config, width=30)
-        self.entry_columna1.insert(0, "Archivo_Origen")
+        self.entry_columna1.insert(0, "PERIODO_L")
         self.entry_columna1.grid(row=0, column=1, sticky=(tk.W, tk.E), padx=(10, 0), pady=2)
         
         ttk.Label(frame_config, text="Nombre Columna 2:").grid(row=1, column=0, sticky=tk.W, pady=2)
         self.entry_columna2 = ttk.Entry(frame_config, width=30)
-        self.entry_columna2.insert(0, "Fecha_Procesamiento")
+        self.entry_columna2.insert(0, "PERIODO_A")
         self.entry_columna2.grid(row=1, column=1, sticky=(tk.W, tk.E), padx=(10, 0), pady=2)
         
         ttk.Label(frame_config, text="Formato de salida:").grid(row=2, column=0, sticky=tk.W, pady=2)
