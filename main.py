@@ -16,7 +16,7 @@ Características:
 - Archivos de salida en carpeta separada
 
 Autor: Sebastian Abdala Asencio
-Versión: 0.1.0
+Versión: 2.0.0
 """
 
 import sys
